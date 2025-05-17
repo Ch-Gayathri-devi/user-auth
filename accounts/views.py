@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from .forms import UserRegistrationForm
 from .models import User
 
@@ -21,7 +22,5 @@ def dashboard(request):
     context = {
         'user': user,
     }
-    if user.is_patient:
-        return render(request, 'accounts/patient_dashboard.html', context)
-    elif user.is_doctor:
-        return render(request, 'accounts/doctor_dashboard.html', context)
+    template_name = 'accounts/patient_dashboard.html' if user.is_patient else 'accounts/doctor_dashboard.html'
+    return render(request, template_name, context)
